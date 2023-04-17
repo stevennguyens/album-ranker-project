@@ -1,0 +1,12 @@
+.add-btn-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.add-btn {
+    cursor: pointer;
+    &:hover {
+        color: var(--dark-grey);
+    }
+}
