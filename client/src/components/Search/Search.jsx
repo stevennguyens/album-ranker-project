@@ -1,14 +1,20 @@
-const Search = ({handleOnChange}) => {
-    return (
-        <div className="search-div">
-            <div className="search-bar">
-                <input onChange={handleOnChange} type="text" className="search-input" />
-                <p>Cancel</p>
-            </div>
-            <div className="search-result">
+import { useState } from "react"
+import "./Search.scss"
 
-            </div>
+const Search = ({handleOnChange, placeholder}) => {
+    const [inputValue, setInputValue] = useState("")
+    const clearInput = () => {
+        setInputValue("")
+        handleOnChange("")
+    }
+    return (
+        <div className="search-bar">
+            <input onChange={(e) => {handleOnChange(e); setInputValue(e.target.value)}} value={inputValue} type="text" className="search-input" placeholder={placeholder}/>
+            <span onClick={clearInput} className="material-symbols-outlined close-icon" >
+                close
+            </span> 
         </div>
+ 
     )
 }
 

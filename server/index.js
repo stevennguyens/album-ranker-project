@@ -63,7 +63,7 @@ app.get('/callback', async (req, res) => {
     // if (state == null || state !== storedState) {
     //     res.redirect(`/#${querystring.stringify({ error: 'state_mismatch' })}`);
     // } else {
-        res.clearCookie(stateKey);
+        //res.clearCookie(stateKey);
         await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
             headers: {
@@ -85,6 +85,7 @@ app.get('/callback', async (req, res) => {
         })
         .then(data => {
             const { access_token, refresh_token, expires_in } = data;
+
             const queryParams = querystring.stringify({
                 access_token,
                 refresh_token,

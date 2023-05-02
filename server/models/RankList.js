@@ -4,15 +4,17 @@ const RankListSchema = new mongoose.Schema({
     userId: {
         type: String
     },
-    title: {
+    name: {
         type: String
     },
-    ranklist: {
-        type: Array
+    public: {
+        type: Boolean
     },
-    picture: {
+    description: {
         type: String,
-        default: ""
+    },
+    items: {
+        type: Array,
     },
     type: {
         type: String,

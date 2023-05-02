@@ -24,7 +24,7 @@ const getAccessToken = () => {
     }
     const error = urlParams.get('error');
     if (error || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
-        getRefreshToken()
+        logout()
     }
 
     if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {

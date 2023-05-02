@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.scss";
 import { useDispatch } from "react-redux";
-import { logout } from "spotify.js"
+import { logout } from "spotify.js";
+
 const Navbar = ({token}) => {
-    console.log(token)
-    // const [token, setToken] = useState(null);
-    // useEffect(() => {
-    //     console.log(accessToken)
-    //     setToken(accessToken)
-    // }, []);
-    const [isLogin, setIsLogin] = useState(false);
-    const dispatch = useDispatch;
+    console.log(token);
     const navigate = useNavigate();
-    const code = new URLSearchParams(window.location.search).get("code")
+    const location = useLocation();
+    useEffect(() => {
+        const access_token = new URLSearchParams(window.location.search).get("access_token");
+        if (access_token) {
+            navigate("/home");
+        }
+    }, []);
+    // const code = new URLSearchParams(window.location.search).get("access_token")
+    // console.log("CODE: " + code);
     // const login = async () => {
     //     const response = await fetch(
     //         "http://localhost:3001/login/",
@@ -29,9 +31,17 @@ const Navbar = ({token}) => {
     // const dispatch = useDispatch();
     // const user = useSelector((state) => state.user);
     //const isNonMobileScreens = useMediaQuery("(min-width: 1000px)"); 
+    const handleLogout = () => {
+        logout();
+    }
+    const navigateHome = () => {
+        if (location.pathname !== '/home') {
+            navigate("/home");
+        }
+    }
     return(
         <div id="navbar">
-            <span onClick={() => navigate("/home")}>
+            <span onClick={navigateHome}>
                 Muserank
             </span>
             {!token ?
@@ -43,7 +53,7 @@ const Navbar = ({token}) => {
             </span>)
             : 
             (<span>
-                <a href="#" onClick={logout}>
+                <a href="#" onClick={handleLogout}>
                    Log out
                 </a>
                 

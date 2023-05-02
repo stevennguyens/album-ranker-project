@@ -17,7 +17,9 @@
   --black: #393d3f;
 }
 
-#root {
+body {
   background: var(--white);
-  height: 100vh;
 }
+/* #root {
+  background: var(--white);
+} */

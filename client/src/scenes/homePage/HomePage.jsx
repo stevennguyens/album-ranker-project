@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
     const [ranklists, setRankLists] = useState([]);
     const navigate = useNavigate();
-    
     // const getRankLists = async () => {
     //     const ranklists = await fetch(
     //         `http://localhost:3001/${user}/ranklists`,
@@ -29,7 +28,7 @@ const HomePage = () => {
     // getRankLists()
     // console.log(ranklists)
     const handleAddBtnClick = (type) => {
-        navigate(`/add-ranklist-${type}`);
+        navigate(`/add-ranklist/${type}`);
     }
 
     return(

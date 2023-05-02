@@ -11,6 +11,13 @@
     background: var(--grey);
 }
 
+.ranklist-form-div {
+    padding: 30px 40px;
+
+    .ranklist-div {
+        padding: 20px 0px
+    }
+}
 .form {
     display: flex;
     flex-direction: column;
