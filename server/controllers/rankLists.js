@@ -2,17 +2,24 @@ import RankList from "../models/RankList.js";
 
 // create
 export const createRankList = async (req, res) => {
+    console.log("create rank list")
     try {
         const {
             userId,
-            title,
-            ranklist
+            name,
+            items,
+            type
         } = req.body;
-        const newRankList = new RankList(userId, title, ranklist);
-        await newRankList.save();
+        
+        if (userId && name && items.length && type) {
+            const newRankList = new RankList({items: items, userId: userId, name: name, public: true, description: "", type: type});
+            await newRankList.save();
 
-        const rankList = await RankList.find()
-        res.status(201).json(rankList)
+            const rankList = await RankList.find()
+            res.status(201).json(rankList)
+        } else {
+            res.status(404).json({error: "params undefined"})
+        }
     } catch (err) {
         res.status(404).json({error: err.message})
     }

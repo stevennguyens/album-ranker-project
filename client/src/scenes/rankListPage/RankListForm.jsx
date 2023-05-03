@@ -2,15 +2,18 @@ import ListItem from "components/ListItem/ListItem";
 import "../loginPage/Form.scss";
 import Search from "components/Search/Search";
 import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { accessToken } from "spotify";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from 'immutability-helper';
 import DraggableListItem from "components/ListItem/DraggableListItem";
 import SearchResult from "components/Search/SearchResult";
+import Button from "components/Buttons/Button";
 
 const RankListForm = () => {
+    const navigate = useNavigate();
+
     const [searchQuery, setSearchQuery] = useState();
     const [trackSearchResult, setTrackSearchResult] = useState();
     const [albumSearchResult, setAlbumSearchResult] = useState();
@@ -28,15 +31,32 @@ const RankListForm = () => {
     }
     useEffect(() => {
         fetchSearchResult()
-    }, [searchQuery])
+    }, [searchQuery]);
+
+    useEffect(() => {
+        if (showSearch === false) {
+            setSearchQuery("")
+        }
+    }, [showSearch])
     
     const handleOnChange = (e) => {
         e ? setSearchQuery(e.target.value) : setSearchQuery("")
     }
 
+    const fetchUserId = async () => {
+        const response = await fetch(`https://api.spotify.com/v1/me`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+        const data = await response.json()
+        return data.id
+    }
+
     const fetchSearchResult = async () => {
         if (searchQuery) {
-            const response = await fetch(
+            const response = await fetch (
                 `https://api.spotify.com/v1/search?query=${searchQuery}&type=${types.join("%2C")}&locale=en-US%2Cen%3Bq%3D0.9&offset=0&limit=10&access_token=${accessToken}`,
             )
             const data = await response.json();
@@ -142,9 +162,36 @@ const RankListForm = () => {
         [],
     )
 
+    const createRanklist = async () => {
+        if (ranklist.length) {
+            const userId = await fetchUserId()
+            const name = "Ranklist"
+            const response = await fetch (
+                'http://localhost:3001/ranklists/add-ranklist',
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({userId:userId, name:name, items:ranklist, type:type})
+                }
+            );
+            const data = await response.json();
+            if (data) {
+                navigate("/home");
+            }
+            console.log(data);
+        }  
+    }
+
+    const handleBackBtnClick = () => {
+        navigate('/home');
+    }
+
     return(
         <DndProvider backend={HTML5Backend} className="ranklist-form-div">
             <div className="ranklist-form-div">
+                <span onClick={() => handleBackBtnClick()}className="material-symbols-outlined back-btn">
+                    arrow_back
+                </span>
                 <h1 className="name">Ranklist</h1>
                 
                 <div className="ranklist-div">
@@ -185,9 +232,9 @@ const RankListForm = () => {
                         search
                     </span>
                 }
-                <form action="" className="ranklist-form">
-                    <button className="btn">Add ranklist</button>
-                </form>
+
+                <Button handleClick={() => createRanklist()} text="Add ranklist"/>
+                
             </div>
 
         </DndProvider>
