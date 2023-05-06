@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { logout } from "spotify.js";
 
 const Navbar = ({token}) => {
-    console.log(token);
     const navigate = useNavigate();
     const location = useLocation();
     useEffect(() => {

@@ -1,21 +1,6 @@
 import "./ListItem.scss";
-import { useDrag, useDrop } from 'react-dnd';
-import { useState, useRef } from "react";
 
 const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
-    let imgSrc = ""
-
-    switch(item.type) {
-        case "track":
-            imgSrc = item.album.images ? item.album.images[item.album.images.length - 1].url : "";
-            break;
-        case "album":
-            imgSrc = item.images ? item.images[item.images.length - 1].url : "";
-            break;
-        case "artist":
-            imgSrc = item.images.length ? item.images[item.images.length - 1].url : ""
-            break;
-    }
     return (
         <div onClick={() => handleItemClick(item)} className="list-item">
             <div className={removable ? "list-info removable" : "list-info"}>
@@ -23,7 +8,7 @@ const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
                     { index >= 0 ?
                     <p className="index">{index + 1}</p> :
                     ""}
-                    <img draggable="false" className="img" src={imgSrc}></img>
+                    <img draggable="false" className="img" src={item.image}></img>
                 </div>
                 
                 { item.type === "artist" 

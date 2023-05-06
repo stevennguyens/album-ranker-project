@@ -23,6 +23,7 @@ function App() {
         <Route path="/"></Route>
         <Route path="/home" element={token ? <HomePage/> : <Navigate to="/"/>}></Route>
         <Route path="/profile/:userId" element={token ? <ProfilePage/> : <Navigate to="/"/>}></Route>
+        <Route path="/ranklists/:ranklistId" element={ token ? <RankListPage/>: <Navigate to=""/>}></Route>
         <Route path="/ranklists" element={token ? <RankListPage/> : <Navigate to="/"/>}></Route>
         <Route path="/add-ranklist/:type" element={token ? <RankListForm/> : <Navigate to="/"/>}></Route>
       </Routes>) : (null)

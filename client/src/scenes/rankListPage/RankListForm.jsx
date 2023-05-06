@@ -3,7 +3,7 @@ import "../loginPage/Form.scss";
 import Search from "components/Search/Search";
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { accessToken } from "spotify";
+import { accessToken, getUserId } from "spotify";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from 'immutability-helper';
@@ -43,17 +43,6 @@ const RankListForm = () => {
         e ? setSearchQuery(e.target.value) : setSearchQuery("")
     }
 
-    const fetchUserId = async () => {
-        const response = await fetch(`https://api.spotify.com/v1/me`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${accessToken}`
-            }
-        });
-        const data = await response.json()
-        return data.id
-    }
-
     const fetchSearchResult = async () => {
         if (searchQuery) {
             const response = await fetch (
@@ -61,17 +50,17 @@ const RankListForm = () => {
             )
             const data = await response.json();
             if (data.albums) {
-                setAlbumSearchResult(data.albums.items)
+                setAlbumSearchResult(data.albums.items.map((item) => formatItem(item)))
             } else {
                 setAlbumSearchResult("")
             }
             if (data.artists) {
-                setArtistSearchResult(data.artists.items)
+                setArtistSearchResult(data.artists.items.map((item) => formatItem(item)))
             } else {
                 setArtistSearchResult("")
             }
             if (data.tracks) {
-                setTrackSearchResult(data.tracks.items)
+                setTrackSearchResult(data.tracks.items.map((item) => formatItem(item)))
             } else {
                 setTrackSearchResult("")
             }
@@ -82,6 +71,21 @@ const RankListForm = () => {
         }
     }
 
+    const formatItem = (item) => {
+        const formattedItem = {
+            id: item.id,
+            type: item.type,
+            image: item.type === "track" ? item.album.images[0].url : item.images[0].url,
+            name: item.name,
+        }
+        if (item.type === "album") {
+            formattedItem["artists"] = item.artists
+            
+        } else if (item.type === "track") {
+            formattedItem["artists"] = item.artists
+        }
+        return formattedItem
+    }
     const handleItemClick = (item) => {
         if (item.type === type) {
             setRankList([...ranklist, item])
@@ -115,7 +119,7 @@ const RankListForm = () => {
                 }
             });
         const tracksData = await tracksResponse.json()
-        setRankList([...ranklist, ...tracksData.tracks])
+        setRankList([...ranklist, ...tracksData.tracks.map((track) => formatItem(track))])
     }
 
     const fetchAlbumsFromArtist = async(id) => {
@@ -128,7 +132,7 @@ const RankListForm = () => {
                 }
             });
         const data = await response.json();
-        setRankList([...ranklist, ...data.items])
+        setRankList([...ranklist, ...data.items.map(item => formatItem(item))])
     }
 
     const moveItem = useCallback((dragIndex, hoverIndex) => {
@@ -164,8 +168,8 @@ const RankListForm = () => {
 
     const createRanklist = async () => {
         if (ranklist.length) {
-            const userId = await fetchUserId()
-            const name = "Ranklist"
+            const userId = await getUserId();
+            const name = "Ranklist";
             const response = await fetch (
                 'http://localhost:3001/ranklists/add-ranklist',
                 {
@@ -178,7 +182,6 @@ const RankListForm = () => {
             if (data) {
                 navigate("/home");
             }
-            console.log(data);
         }  
     }
 

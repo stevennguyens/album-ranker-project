@@ -13,12 +13,11 @@ export const getUser = async (req, res) => {
 
 export const getRankLists = async (req, res) => {
     try {
-        const { id } = req.params;
-        const user = findById(id)
+        const { userId } = req.params;
         const rankLists = await Promise.all(
-            user.rankLists.map((id) => rankLists.findById(id))
+            RankList.find({userId: userId})
         )
-        const formattedRankLists = rankLists.map(({_id, title, rankList}) => {_id, title, rankList})
+        const formattedRankLists = rankLists.map(({_id, userId, title, rankList}) => {_id, userId, title, rankList})
         res.status(200).json(formattedRankLists);
     } catch (err) {
         res.status(404).json({error: err.message});

@@ -5,9 +5,6 @@ const Dropdown = ({toggleMenu, setToggleMenu, children}) => {
     const menuRef = useRef();
     useEffect(() => {
         const handler = (e) => {
-            console.log("clicked: " + e.target)
-            console.log(menuRef.current)
-            
             if (toggleMenu && menuRef.current && !menuRef.current.contains(e.target)) {
                 console.log("not contains")
                 setToggleMenu(false);

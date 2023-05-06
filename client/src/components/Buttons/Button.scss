@@ -1,5 +1,5 @@
 .btn {
-    width:fit-content;
+    width: 150px;
     padding: 15px 30px;
     font-size: .8rem;
     border: 2px solid var(--grey);
@@ -17,11 +17,34 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    position: relative;
 }
 
 .add-btn {
     cursor: pointer;
     &:hover {
         color: var(--dark-grey);
+    }
+}
+
+.back-btn,
+.more-btn {
+    cursor: pointer;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 700,
+        'GRAD' 0,
+        'opsz' 48;
+
+    &:hover {
+        color: var(--dark-grey)
+    } 
+}
+
+.active {
+    color: var(--dark-grey);
+
+    &:hover {
+        color: var(--black)
     }
 }

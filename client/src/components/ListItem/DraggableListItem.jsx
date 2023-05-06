@@ -17,10 +17,6 @@ const DraggableListItem = ({id, index, item, moveItem, removeItem}) => {
 
     const [{handlerId}, drop] = useDrop(() => ({
         accept: "item",
-        // collect: (monitor) => ({
-        //     isOver: monitor.isOver(),
-        //     canDrop: monitor.canDrop()
-        // }),
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),

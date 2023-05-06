@@ -39,8 +39,8 @@ export const getRankList = async (req, res) => {
 export const getUserRankLists = async (req, res) => {
     try {
         const { userId } = req.params;
-        const rankLists = await RankList.find({userId});
-        res.status(200).json(rankLists);
+        const rankLists = await RankList.find({userId: userId});
+        res.status(200).json({rankLists});
     } catch (err) {
         res.status(404).json({error: err.message});
     }
