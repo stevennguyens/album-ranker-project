@@ -1,15 +1,13 @@
 import "./Dropdown.scss";
 import { useEffect, useRef } from "react";
+import * as React from 'react';
 
 const Dropdown = ({toggleMenu, setToggleMenu, children}) => {
     const menuRef = useRef();
     useEffect(() => {
         const handler = (e) => {
             if (toggleMenu && menuRef.current && !menuRef.current.contains(e.target)) {
-                console.log("not contains")
                 setToggleMenu(false);
-            } else {
-                console.log("contains")
             }
         };
         window.addEventListener('mousedown', handler);
@@ -19,7 +17,11 @@ const Dropdown = ({toggleMenu, setToggleMenu, children}) => {
     }, [toggleMenu]);
     return(
         <div ref={menuRef} className="dropdown-div">
-            {children}
+            {React.Children.map(children, child => {
+                if (React.isValidElement(child)){
+                    return React.cloneElement(child, {setToggleMenu})
+                }
+            })}
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import "./RankListCard.scss";
 
 const RankListImage = ({items}) => {
+    if (items) {
     let imageArr = [items[0].image];
     for (const i in items) {
         if (!imageArr.includes(items[i].image)) {
@@ -16,13 +17,15 @@ const RankListImage = ({items}) => {
             {(imageArr.length < 4) ?
             <img src={items[0].image}></img>
             :
-            items.map((item, i) => {
+            imageArr.map((image, i) => {
                 return(
-                    <img key={i} src={item.image}></img>
+                    <img key={i} src={image}></img>
                 )
             })}
         </div>
-    )
+    )} else {
+        return 
+    }
 }
 
 export default RankListImage

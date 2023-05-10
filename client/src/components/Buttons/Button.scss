@@ -9,6 +9,14 @@
     margin-top: 10px;
 }
 
+.edit-dialog-form {
+    .btn {
+        width: 100px;
+        padding: 10px;
+        align-self: flex-end;
+    }
+}
+
 .btn:hover {
     background: var(--grey);
 }

@@ -1,0 +1,11 @@
+.error {
+    font-size: .8em;
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    .error-icon {
+        font-size: 1.2em;
+        margin-right: 3px;
+        color: red;
+    }
+}

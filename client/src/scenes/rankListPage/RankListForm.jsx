@@ -1,8 +1,7 @@
-import ListItem from "components/ListItem/ListItem";
 import "../loginPage/Form.scss";
 import Search from "components/Search/Search";
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { accessToken, getUserId } from "spotify";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -10,16 +9,19 @@ import update from 'immutability-helper';
 import DraggableListItem from "components/ListItem/DraggableListItem";
 import SearchResult from "components/Search/SearchResult";
 import Button from "components/Buttons/Button";
+import Error from "components/Error/Error";
 
 const RankListForm = () => {
     const navigate = useNavigate();
-
+    const { state } = useLocation();
+    const [name, setName] = useState(`Ranklist #${state.size}`);
     const [searchQuery, setSearchQuery] = useState();
     const [trackSearchResult, setTrackSearchResult] = useState();
     const [albumSearchResult, setAlbumSearchResult] = useState();
     const [artistSearchResult, setArtistSearchResult] = useState();
     const [ranklist, setRankList] = useState([]);
     const [showSearch, setShowSearch] = useState(true);
+    const [error, setError] = useState("");
 
     let {type} = useParams();
     type = type.substring(0, type.length - 1);
@@ -30,6 +32,9 @@ const RankListForm = () => {
         types.push("artist")
     }
     useEffect(() => {
+        document.getElementById("name").select()
+    }, [])
+    useEffect(() => {
         fetchSearchResult()
     }, [searchQuery]);
 
@@ -39,7 +44,13 @@ const RankListForm = () => {
         }
     }, [showSearch])
     
-    const handleOnChange = (e) => {
+    const handleOnNameChange = (e) => {
+        e ? setName(e.target.value) : setName(""); 
+    }
+    useEffect(() => {
+        name ? setError("") : setError("Name is required.")
+    }, [name])
+    const handleOnSearchChange = (e) => {
         e ? setSearchQuery(e.target.value) : setSearchQuery("")
     }
 
@@ -83,9 +94,11 @@ const RankListForm = () => {
             
         } else if (item.type === "track") {
             formattedItem["artists"] = item.artists
+            formattedItem["album"] = item.album.name
         }
         return formattedItem
     }
+
     const handleItemClick = (item) => {
         if (item.type === type) {
             setRankList([...ranklist, item])
@@ -169,7 +182,6 @@ const RankListForm = () => {
     const createRanklist = async () => {
         if (ranklist.length) {
             const userId = await getUserId();
-            const name = "Ranklist";
             const response = await fetch (
                 'http://localhost:3001/ranklists/add-ranklist',
                 {
@@ -195,8 +207,11 @@ const RankListForm = () => {
                 <span onClick={() => handleBackBtnClick()}className="material-symbols-outlined back-btn">
                     arrow_back
                 </span>
-                <h1 className="name">Ranklist</h1>
-                
+
+                <input id="name" onChange={handleOnNameChange} type="text" className={error ? "name name-error" : "name"} name="name" aria-describedby="error" defaultValue={name} spellCheck="false" autoFocus={true} autoComplete="off"></input>
+                { error 
+                && 
+                <Error error={error}/> }
                 <div className="ranklist-div">
                     {ranklist.map((item, i)=> renderItem(item, i))}
                 </div>
@@ -204,7 +219,7 @@ const RankListForm = () => {
                 { showSearch ? 
                     <div className="search-div">
                         <div className="search-bar-div">
-                            <Search handleOnChange={handleOnChange} placeholder={`Search for ${['a', 'e', 'i', 'o', 'u'].includes(type[0].toLowerCase()) ? "an" : "a"} ${
+                            <Search handleOnChange={handleOnSearchChange} placeholder={`Search for ${['a', 'e', 'i', 'o', 'u'].includes(type[0].toLowerCase()) ? "an" : "a"} ${
                                 types.map((typeVal, i) => {
                                     if (i === types.length - 1) return typeVal 
                                     else return typeVal + " or " 

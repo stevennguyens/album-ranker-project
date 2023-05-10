@@ -3,7 +3,6 @@ import "./RankListCard.scss"
 import RankListImage from "./RankListImage"
 
 const RankList = ({item}) => {
-    const navigate = useNavigate();
     return(
         <Link 
             className="ranklist-card"

@@ -13,11 +13,11 @@ const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
                 
                 { item.type === "artist" 
                     ?
-                    <div className="title artist-type">{item.name}</div>
+                    <div className="title type-artist">{item.name}</div>
                     :
                     <>
                         <div className="title">{item.name}</div>
-                        <div className="album">{(item.album && item.album !== 'undefined') ? item.album.name : ""}</div>
+                        <div className="album">{item.album ? item.album : ""}</div>
                         <div className="artist">
                             {item.artists ? item.artists.map((artist, i) => 
                                 (i == (item.artists.length - 1)) ?

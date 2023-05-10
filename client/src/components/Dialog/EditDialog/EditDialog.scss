@@ -1,0 +1,44 @@
+.edit-dialog-div {
+    background-color: rgba(0, 0, 0, 0.508);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .edit-dialog-form {
+        background-color: var(--white);
+        padding: 20px;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+
+        .close-btn {
+            font-size: 1.2em;
+            color: var(--black);
+            cursor: pointer;
+            align-self: flex-end;
+            &:hover {
+                color: var(--darker-grey);
+            }
+        }
+
+        label {
+            font-size: .9em;
+            margin-bottom: 5px;
+        }
+
+        .input {
+            padding: 10px;
+            border-radius: 4px;
+            background: var(--grey);
+            &.input-error {
+                border: 1px solid red;
+            }
+        }
+    }
+}

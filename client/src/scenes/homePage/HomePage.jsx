@@ -6,28 +6,23 @@ import RankListCard from 'components/RankList/RankListCard';
 import AddButton from 'components/Buttons/AddButton';
 import { useNavigate } from 'react-router-dom';
 import { getUserId } from 'spotify';
+import {getRanklists} from 'server';
 
 const HomePage = () => {
     const [ranklists, setRankLists] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        getRankLists()
+        getRanklists(setRankLists)
     }, [])
 
-    const getRankLists = async () => {
-        const userId = await getUserId();
-        const response = await fetch(
-            `http://localhost:3001/ranklists/${userId}`
-        );
-        const data = await response.json();
-        if (data) {
-            setRankLists(data.rankLists)
-        }
-    }
-
     const handleAddBtnClick = (type) => {
-        navigate(`/add-ranklist/${type}`);
+        navigate(`/add-ranklist/${type}`,
+        {
+            state: {
+                size: ranklists.length
+            }
+        });
     }
 
     return(
@@ -37,14 +32,12 @@ const HomePage = () => {
                 <AddButton handleAddBtnClicked={handleAddBtnClick}/>
             </div>
             <div className="ranklist-card-div">
-                {ranklists ?
+                {ranklists &&
                 ranklists.map((list, i) => {
                     return (
                         <RankListCard key={i} item={list}/>
                     )
-                })
-                : ""
-                }
+                })}
             </div>
         </div>
     )

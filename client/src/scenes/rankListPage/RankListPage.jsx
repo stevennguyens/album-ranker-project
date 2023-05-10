@@ -7,11 +7,29 @@ import Dropdown from "components/Dropdown/Dropdown";
 import DropdownItem from "components/Dropdown/DropdownItem";
 import BackButton from "components/Buttons/BackButton";
 import MoreButton from "components/Buttons/MoreBtn";
-
+import EditDialog from "components/Dialog/EditDialog/EditDialog";
+import { getRanklist } from "server";
 const RankListPage = () => {
     const navigate = useNavigate();
     const {ranklistId} = useParams();
-    const {state} = useLocation();
+    const [ranklist, setRanklist] = useState("");
+    const [showEditDialog, setShowEditDialog] = useState(false);
+
+    useEffect(() => {
+        getRanklist(ranklistId, setRanklist);
+    }, [])
+
+    useEffect(() => {
+        showEditDialog ? document.body.style.overflow = "hidden" : document.body.style.overflow = "scroll" 
+    }, [showEditDialog])
+
+    const openDialog = () => {
+        setShowEditDialog(true);
+    }
+
+    const closeDialog = () => {
+        setShowEditDialog(false)
+    }  
 
     return (
         <div className="ranklist-page">
@@ -19,19 +37,27 @@ const RankListPage = () => {
                 <BackButton handleClick={() => navigate(-1)}/>
             </div>
 
-            <RankListImage className="ranklist-image" items={state.items}/>
+            <RankListImage id="ranklist-image" items={ranklist.items}/>
             
-            <h1>{state.name}</h1>
+            <div className="ranklist-name">
+                <h1 onClick={openDialog}>{ranklist.name}</h1>
+            </div>
+            
             
             <MoreButton> 
-                <DropdownItem itemName="Edit details"/>
+                <DropdownItem handleClick={openDialog} itemName="Edit details"/>
             </MoreButton>
+
+            {showEditDialog 
+            ? <EditDialog listName={ranklist.name} closeDialog={closeDialog} ranklistId={ranklistId}/>
+            : null 
+            }
 
 
             <div className="ranklist">
-                {state.items.map((item, i) => {
+                {ranklist && ranklist.items.map((item, i) => {
                     return(
-                        <ListItem key={i} index={i} item={item} handleItemClick={() => ""}></ListItem>
+                        <ListItem key={i} index={i} item={item} removable={true} handleItemClick={() => ""}></ListItem>
                     )
                 })}
             </div>

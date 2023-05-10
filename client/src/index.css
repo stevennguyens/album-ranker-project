@@ -20,6 +20,13 @@
 body {
   background: var(--white);
 }
+
+input {
+  background: none;
+  border: none;
+  padding: 5px;
+  outline: none;
+}
 /* #root {
   background: var(--white);
 } */

@@ -28,9 +28,9 @@ export const createRankList = async (req, res) => {
 // read
 export const getRankList = async (req, res) => {
     try {
-        const { id } = req.params;
-        const rankList = RankList.findById(id);
-        res.status(200).json(rankList);
+        const { ranklistId } = req.params;
+        const ranklist = await RankList.findById(ranklistId);
+        res.status(200).json(ranklist);
     } catch (err) {
         res.status(404).json({ error:err.message });
     }
@@ -47,5 +47,14 @@ export const getUserRankLists = async (req, res) => {
 }
 
 // update
-
+export const updateRanklist = async (req, res) => {
+    try {
+        const { ranklistId } = req.params;
+        const { name } = req.body
+        const doc = await RankList.findOneAndUpdate({_id: ranklistId}, {name: name}, {new: true});
+        res.status(200).json(doc.name)
+    } catch (err) {
+        res.status(404).json({error: err.message})
+    }
+}
 // delete
