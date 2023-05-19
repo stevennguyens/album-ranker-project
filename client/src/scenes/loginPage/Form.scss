@@ -16,12 +16,21 @@
         }
         .input {
             align-self: flex-end;
+            flex: 1;
+            .name {
+                width: 100%;
+                &:not(.edit) {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+                
+            }
         }
         .more-btn-div {
             position: relative;
             display: flex;
             justify-content: end;
-            flex: 1;
         }
     }
 
@@ -29,9 +38,9 @@
         padding: 30px 0px;
         &.uneditable {
             .list-item {
-                // .img-div {
-                //     display: flex;
-                // }
+                .img-div {
+                    display: flex;
+                }
                 pointer-events: none;
             }
             

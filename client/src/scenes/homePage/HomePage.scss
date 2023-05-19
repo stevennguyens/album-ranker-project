@@ -10,7 +10,13 @@
         padding-top: 30px;
         display: grid;
         grid-template-columns: repeat(auto-fit, 200px);
-        grid-template-rows: repeat(auto-fit, 250px);
+        grid-template-rows: repeat(auto-fit, 275px);
         gap: 50px;
+        overflow: hidden;
+        h4 {
+            text-overflow: ellipsis;
+            white-space: pre-wrap;
+            overflow: hidden;
+        }
     }
 }

@@ -1,5 +1,5 @@
 .dropdown-div {
-    background: var(--grey);
+    background: var(--matcha-light);
     padding: 3px;
     border-radius: 4px;
     position: absolute;
@@ -15,7 +15,7 @@
     font-size: .9rem;
 
     &:hover {
-        background: var(--dark-grey);
+        background: var(--matcha-2);
     }
 
     &.red {
