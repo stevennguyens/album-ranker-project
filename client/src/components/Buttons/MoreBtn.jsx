@@ -5,13 +5,8 @@ import { useState, useEffect } from "react";
 
 const MoreButton = ({children}) => {
     const [toggleMenu, setToggleMenu] = useState(false);
-    
-    useEffect(()=> {
-        console.log(toggleMenu);
-    }, [toggleMenu]);
 
     const handleClick = () => {
-        console.log("handleClick: ", toggleMenu);
         if (!toggleMenu) setToggleMenu(true)
     }
 

@@ -2,7 +2,6 @@ import RankList from "../models/RankList.js";
 
 // create
 export const createRankList = async (req, res) => {
-    console.log("create rank list")
     try {
         const {
             userId,
@@ -11,7 +10,7 @@ export const createRankList = async (req, res) => {
             type
         } = req.body;
         
-        if (userId && name && items.length && type) {
+        if (userId && name && type) {
             const newRankList = new RankList({items: items, userId: userId, name: name, public: true, description: "", type: type});
             await newRankList.save();
 
@@ -50,11 +49,25 @@ export const getUserRankLists = async (req, res) => {
 export const updateRanklist = async (req, res) => {
     try {
         const { ranklistId } = req.params;
-        const { name } = req.body
-        const doc = await RankList.findOneAndUpdate({_id: ranklistId}, {name: name}, {new: true});
-        res.status(200).json(doc.name)
+        const { name, items } = req.body;
+        const doc = await RankList.findOneAndUpdate({_id: ranklistId}, {name: name, items: items}, {new: true});
+        res.status(200).json(doc)
     } catch (err) {
         res.status(404).json({error: err.message})
     }
 }
+
 // delete
+export const deleteRanklist = async (req, res) => {
+    console.log("delete ranklist 1")
+    try {
+        console.log("delete ranklist")
+        const { userId, ranklistId } = req.params;
+        console.log(ranklistId);
+        console.log(userId)
+        const doc = await RankList.deleteOne({_id: ranklistId, userId: userId});
+        res.status(200).json(doc);
+    } catch (err) {
+        res.status(404).json({error: err.message})
+    }
+}

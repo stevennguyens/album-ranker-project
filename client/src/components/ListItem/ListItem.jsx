@@ -1,8 +1,16 @@
+import { useState } from "react";
 import "./ListItem.scss";
 
 const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
+    const [showClose, setShowClose] = useState(false);
+    const handleOnMouseEnter = () => {
+        return removable && setShowClose(true) 
+    }
+    const handleOnMouseLeave = () => {
+        return removable && setShowClose(false) 
+    }
     return (
-        <div onClick={() => handleItemClick(item)} className="list-item">
+        <div onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave} onClick={() => handleItemClick(item)} className="list-item">
             <div className={removable ? "list-info removable" : "list-info"}>
                 <div className="img-div">
                     { index >= 0 ?
@@ -26,7 +34,7 @@ const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
                         </div>
                     </>
                 }
-                { removable 
+                { showClose
                     ? 
                     <span className="material-symbols-outlined" onClick={() => removeItem(index)}>
                     close

@@ -1,10 +1,41 @@
+.back-btn {
+    padding: 30px 30px 0px 30px
+}
 .ranklist-form-div {
-    padding: 30px 40px;
+    padding: 30px 80px;
     display: flex;
     flex-direction: column;
 
+    .ranklist-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        .ranklist-image {
+            height: 200px;
+            width: 200px;
+        }
+        .input {
+            align-self: flex-end;
+        }
+        .more-btn-div {
+            position: relative;
+            display: flex;
+            justify-content: end;
+            flex: 1;
+        }
+    }
+
     .ranklist-div {
-        padding: 20px 0px
+        padding: 30px 0px;
+        &.uneditable {
+            .list-item {
+                // .img-div {
+                //     display: flex;
+                // }
+                pointer-events: none;
+            }
+            
+        }
     }
 
     .back-btn {
@@ -17,10 +48,9 @@
     }
 
     .name {
-        font-size: 3em;
+        font-size: 4em;
         font-weight: 800;
-        width: 80%;
-        &:focus {
+        &.edit {
             border-bottom: 2px solid var(--dark-grey);
         }
         &.name-error {
@@ -29,7 +59,7 @@
     }
 
     .btn {
-        margin-top: 30px;
+        margin-bottom: 40px;
     }
 }
 .form {
@@ -43,14 +73,6 @@
         flex-direction: column;
     }
 
-    // input {
-    //     margin: 5px 0px 17px 0px;
-    //     font-size: .8rem;
-    //     width: 400px;
-    //     padding: 10px 12px;
-    //     border: 2px solid var(--grey);
-    //     border-radius: 5px;
-    // }
     p {
         font-size: .7rem;
         margin-top: 15px;

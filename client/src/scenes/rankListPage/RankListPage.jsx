@@ -9,59 +9,61 @@ import BackButton from "components/Buttons/BackButton";
 import MoreButton from "components/Buttons/MoreBtn";
 import EditDialog from "components/Dialog/EditDialog/EditDialog";
 import { getRanklist } from "server";
+import RankListForm from "./RankListForm";
+import { getUserId } from "spotify";
+import { deleteRanklist } from "server";
 const RankListPage = () => {
     const navigate = useNavigate();
     const {ranklistId} = useParams();
     const [ranklist, setRanklist] = useState("");
-    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [userId, setUserId] = useState();
 
     useEffect(() => {
         getRanklist(ranklistId, setRanklist);
-    }, [])
-
+    }, []);
     useEffect(() => {
-        showEditDialog ? document.body.style.overflow = "hidden" : document.body.style.overflow = "scroll" 
-    }, [showEditDialog])
+        const fetchUserId = async () => {
+            setUserId(await getUserId());
+        }
+        fetchUserId()
+    }, []);
 
-    const openDialog = () => {
-        setShowEditDialog(true);
+    const saveRanklist = async ({name, items}) => {
+        if (name) {
+            const response = await fetch(`http://localhost:3001/ranklists/ranklist/${ranklistId}`,
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({name: name, items: items})
+                }
+            );
+            const data = await response.json();
+            if (data) setEdit(false);
+        }
     }
 
-    const closeDialog = () => {
-        setShowEditDialog(false)
-    }  
-
+    const handleDelete = () => {
+        const deleted = deleteRanklist(ranklistId);
+        console.log()
+        if (deleted) {
+            navigate("/home");
+        } else {
+            // add dialog that user cannot delete 
+        }
+    }
     return (
-        <div className="ranklist-page">
-            <div className="back-btn-div">
-                <BackButton handleClick={() => navigate(-1)}/>
-            </div>
-
-            <RankListImage id="ranklist-image" items={ranklist.items}/>
-            
-            <div className="ranklist-name">
-                <h1 onClick={openDialog}>{ranklist.name}</h1>
-            </div>
-            
-            
-            <MoreButton> 
-                <DropdownItem handleClick={openDialog} itemName="Edit details"/>
-            </MoreButton>
-
-            {showEditDialog 
-            ? <EditDialog listName={ranklist.name} closeDialog={closeDialog} ranklistId={ranklistId}/>
-            : null 
+        ranklist && 
+        <RankListForm name={ranklist.name} ranklist={ranklist.items} type={ranklist.type} buttonText="Save" edit={edit} handleClick={saveRanklist}>
+            { 
+                ranklist.userId === userId &&
+                (<MoreButton> 
+                    <DropdownItem handleClick={()=>setEdit(true)} itemName="Edit details"/>
+                    <DropdownItem red={"red"} handleClick={handleDelete} itemName="Delete ranklist"/>
+                </MoreButton>)
+                
             }
-
-
-            <div className="ranklist">
-                {ranklist && ranklist.items.map((item, i) => {
-                    return(
-                        <ListItem key={i} index={i} item={item} removable={true} handleItemClick={() => ""}></ListItem>
-                    )
-                })}
-            </div>
-        </div>
+        </RankListForm>
     )
 }
 

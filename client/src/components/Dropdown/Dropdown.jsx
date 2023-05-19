@@ -6,7 +6,7 @@ const Dropdown = ({toggleMenu, setToggleMenu, children}) => {
     const menuRef = useRef();
     useEffect(() => {
         const handler = (e) => {
-            if (toggleMenu && menuRef.current && !menuRef.current.contains(e.target)) {
+            if (toggleMenu && menuRef.current && !menuRef.current.contains(e.target) && e.target.id !== "add-btn") {
                 setToggleMenu(false);
             }
         };

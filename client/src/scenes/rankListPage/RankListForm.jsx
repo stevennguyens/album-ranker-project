@@ -10,21 +10,22 @@ import DraggableListItem from "components/ListItem/DraggableListItem";
 import SearchResult from "components/Search/SearchResult";
 import Button from "components/Buttons/Button";
 import Error from "components/Error/Error";
+import RankListImage from "components/RankList/RankListImage";
+import { getRanklist } from "server";
+import ListItem from "components/ListItem/ListItem";
 
-const RankListForm = () => {
+const RankListForm = (props) => {
     const navigate = useNavigate();
-    const { state } = useLocation();
-    const [name, setName] = useState(`Ranklist #${state.size}`);
+    const [name, setName] = useState(props.name);
     const [searchQuery, setSearchQuery] = useState();
     const [trackSearchResult, setTrackSearchResult] = useState();
     const [albumSearchResult, setAlbumSearchResult] = useState();
     const [artistSearchResult, setArtistSearchResult] = useState();
-    const [ranklist, setRankList] = useState([]);
+    const [ranklist, setRankList] = useState(props.ranklist);
     const [showSearch, setShowSearch] = useState(true);
     const [error, setError] = useState("");
 
-    let {type} = useParams();
-    type = type.substring(0, type.length - 1);
+    const type = props.type
     const types = [type]
     if (type === "track") {
         types.push("album")
@@ -32,8 +33,9 @@ const RankListForm = () => {
         types.push("artist")
     }
     useEffect(() => {
-        document.getElementById("name").select()
-    }, [])
+        props.edit && document.getElementById("name").select()
+    }, [props.edit])
+
     useEffect(() => {
         fetchSearchResult()
     }, [searchQuery]);
@@ -47,9 +49,11 @@ const RankListForm = () => {
     const handleOnNameChange = (e) => {
         e ? setName(e.target.value) : setName(""); 
     }
+    
     useEffect(() => {
         name ? setError("") : setError("Name is required.")
     }, [name])
+
     const handleOnSearchChange = (e) => {
         e ? setSearchQuery(e.target.value) : setSearchQuery("")
     }
@@ -103,18 +107,17 @@ const RankListForm = () => {
         if (item.type === type) {
             setRankList([...ranklist, item])
         } else {
-            if (type =="track" && item.type === "album") {
+            if (type === "track" && item.type === "album") {
                 fetchTracksFromAlbum(item.id)
-            } else if (type="album" && item.type === "artist") {
+            } else if (type === "album" && item.type === "artist") {
                 fetchAlbumsFromArtist(item.id)
             }   
         }
-        
     }
 
     const fetchTracksFromAlbum = async (id) => {
         const response = await fetch(
-            `https://api.spotify.com/v1/albums/${id}/tracks`, 
+            `https://api.spotify.com/v1/albums/${id}/tracks&limit=50`, 
             {
                 method: 'GET',
                 headers: {
@@ -122,7 +125,7 @@ const RankListForm = () => {
                 }
             });
         const data = await response.json();
-        const trackIds = data.items.map(item => item.id)
+        const trackIds = data.items.map(item => item.id);
         const tracksResponse = await fetch(
             `https://api.spotify.com/v1/tracks?ids=${trackIds.join()}`, 
             {
@@ -137,7 +140,7 @@ const RankListForm = () => {
 
     const fetchAlbumsFromArtist = async(id) => {
         const response = await fetch(
-            `https://api.spotify.com/v1/artists/${id}/albums?include_groups=album`,
+            `https://api.spotify.com/v1/artists/${id}/albums?include_groups=album&limit=40`,
             {
                 method: 'GET',
                 headers: {
@@ -145,7 +148,9 @@ const RankListForm = () => {
                 }
             });
         const data = await response.json();
-        setRankList([...ranklist, ...data.items.map(item => formatItem(item))])
+        const dataItemsMap = new Map(data.items.map(item => [item.name, item]))
+        const dataItems = [...dataItemsMap.values()]
+        setRankList([...ranklist, ...dataItems.map((item) => formatItem(item))])
     }
 
     const moveItem = useCallback((dragIndex, hoverIndex) => {
@@ -179,47 +184,40 @@ const RankListForm = () => {
         [],
     )
 
-    const createRanklist = async () => {
-        if (ranklist.length) {
-            const userId = await getUserId();
-            const response = await fetch (
-                'http://localhost:3001/ranklists/add-ranklist',
-                {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({userId:userId, name:name, items:ranklist, type:type})
-                }
-            );
-            const data = await response.json();
-            if (data) {
-                navigate("/home");
-            }
-        }  
-    }
-
     const handleBackBtnClick = () => {
-        navigate('/home');
+        navigate(-1);
     }
-
+    
     return(
         <DndProvider backend={HTML5Backend} className="ranklist-form-div">
+            <span onClick={handleBackBtnClick}className="material-symbols-outlined back-btn">
+                arrow_back
+            </span>
             <div className="ranklist-form-div">
-                <span onClick={() => handleBackBtnClick()}className="material-symbols-outlined back-btn">
-                    arrow_back
-                </span>
-
-                <input id="name" onChange={handleOnNameChange} type="text" className={error ? "name name-error" : "name"} name="name" aria-describedby="error" defaultValue={name} spellCheck="false" autoFocus={true} autoComplete="off"></input>
-                { error 
-                && 
-                <Error error={error}/> }
-                <div className="ranklist-div">
-                    {ranklist.map((item, i)=> renderItem(item, i))}
-                </div>
+                <header className="ranklist-header">
+                    <RankListImage items={ranklist}/>
+                    <div className="input">
+                        <input style={!props.edit ? {pointerEvents: "none"} : {}} id="name" onChange={handleOnNameChange} type="text" className={`name ${props.edit ? "edit" : ""} ${error ? "name-error" : ""}`} aria-describedby="error" defaultValue={name} spellCheck="false" autoFocus={props.edit} autoComplete="off"></input>
+                        { error 
+                        && 
+                        <Error error={error}/> }
+                    </div>
+                    {props.children}
+                </header>
                 
-                { showSearch ? 
+                <div className={props.edit ? "ranklist-div" : "ranklist-div uneditable"}>
+                    {ranklist.map((item, i)=> props.edit 
+                        ? renderItem(item, i) 
+                        : <ListItem key={i} index={i} type={item.type} handleItemClick={""} item={item}/>)}
+                </div>
+                          
+                { props.edit && 
+                    <Button handleClick={() => props.handleClick({name: name, items: ranklist})} text={props.buttonText}/> }
+                { props.edit && 
+                (showSearch ? 
                     <div className="search-div">
                         <div className="search-bar-div">
-                            <Search handleOnChange={handleOnSearchChange} placeholder={`Search for ${['a', 'e', 'i', 'o', 'u'].includes(type[0].toLowerCase()) ? "an" : "a"} ${
+                            <Search handleOnChange={handleOnSearchChange} placeholder={`Search for ${['a', 'e', 'i', 'o', 'u'].includes(type ? type[0].toLowerCase() : "") ? "an" : "a"} ${
                                 types.map((typeVal, i) => {
                                     if (i === types.length - 1) return typeVal 
                                     else return typeVal + " or " 
@@ -248,11 +246,8 @@ const RankListForm = () => {
                     :  
                     <span onClick={() => setShowSearch(true)} className="search-icon material-symbols-outlined">
                         search
-                    </span>
+                    </span>)
                 }
-
-                <Button handleClick={() => createRanklist()} text="Add ranklist"/>
-                
             </div>
 
         </DndProvider>

@@ -7,9 +7,11 @@ import { useState, useEffect, useRef } from 'react';
 const AddButton = ({handleAddBtnClicked}) => {
     const [toggleMenu, setToggleMenu] = useState(false);
 
+    
+
     return (
         <div className="add-btn-div">
-            <span onClick={() => setToggleMenu(!toggleMenu)} className="add-btn material-symbols-outlined">
+            <span onClick={() => setToggleMenu(!toggleMenu)} id="add-btn" className="add-btn material-symbols-outlined">
                 playlist_add
             </span>
             {toggleMenu ?

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { accessToken, logout } from "spotify.js";
 import { useEffect, useState } from "react";
 import RankListForm from "scenes/rankListPage/RankListForm";
+import AddRankListPage from "scenes/rankListPage/AddRankListPage";
 
 function App() {
   //const isAuth = Boolean(useSelector(state => state.token))
@@ -25,7 +26,7 @@ function App() {
         <Route path="/profile/:userId" element={token ? <ProfilePage/> : <Navigate to="/"/>}></Route>
         <Route path="/ranklists/:ranklistId" element={ token ? <RankListPage/>: <Navigate to=""/>}></Route>
         <Route path="/ranklists" element={token ? <RankListPage/> : <Navigate to="/"/>}></Route>
-        <Route path="/add-ranklist/:type" element={token ? <RankListForm/> : <Navigate to="/"/>}></Route>
+        <Route path="/add-ranklist/:type" element={token ? <AddRankListPage/> : <Navigate to="/"/>}></Route>
       </Routes>) : (null)
       }
     </BrowserRouter>

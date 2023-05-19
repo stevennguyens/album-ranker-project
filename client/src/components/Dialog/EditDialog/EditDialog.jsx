@@ -20,10 +20,10 @@ const EditDialog = ({listName, closeDialog, ranklistId}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!name) {
-            setError("Ranklist name is required.");
-        } else {
-            updateRanklist(ranklistId, name)
-        }
+            setError("Ranklist name is required.");}
+        // } else {
+        //     saveRanklist(name, items)
+        // }
     } 
 
     return (

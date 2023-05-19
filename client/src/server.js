@@ -18,16 +18,16 @@ export const getRanklists = async (setRankLists) => {
     }
 }
 
-// update
-export const updateRanklist = async (ranklistId, name) => {
-    console.log(updateRanklist)
+// delete
+export const deleteRanklist = async (ranklistId) => {
+    const userId = await getUserId(); 
     const response = await fetch(
-        `http://localhost:3001/ranklists/ranklist/${ranklistId}`,
+        `http://localhost:3001/ranklists/${userId}/delete-ranklist/${ranklistId}`,
         {
-            method:"POST",
-            body: {
-                
-            }
+            method: "DELETE"
         }
         )
+    const data = await response.json();
+    return data.deletedCount
+    
 }
