@@ -189,10 +189,13 @@ const RankListForm = (props) => {
     }
     
     return(
-        <DndProvider backend={HTML5Backend} className="ranklist-form-div">
-            <span onClick={handleBackBtnClick}className="material-symbols-outlined back-btn">
+        <DndProvider backend={HTML5Backend}>
+            <div className="buttons">
+                <span onClick={handleBackBtnClick}className="material-symbols-outlined back-btn">
                 arrow_back
-            </span>
+                </span>
+                {props.children}
+            </div>
             <div className="ranklist-form-div">
                 <header className="ranklist-header">
                     <RankListImage items={ranklist}/>
@@ -202,7 +205,6 @@ const RankListForm = (props) => {
                         && 
                         <Error error={error}/> }
                     </div>
-                    {props.children}
                 </header>
                 
                 <div className={props.edit ? "ranklist-div" : "ranklist-div uneditable"}>

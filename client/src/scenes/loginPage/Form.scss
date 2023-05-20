@@ -1,11 +1,17 @@
-.back-btn {
-    padding: 30px 30px 0px 30px
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 30px 0px 30px;
+    .more-btn-div {
+        position: relative;
+        display: flex;
+        justify-content: end;
+    }
 }
 .ranklist-form-div {
     padding: 30px 80px;
     display: flex;
     flex-direction: column;
-
     .ranklist-header {
         display: flex;
         flex-wrap: wrap;
@@ -26,11 +32,6 @@
                 }
                 
             }
-        }
-        .more-btn-div {
-            position: relative;
-            display: flex;
-            justify-content: end;
         }
     }
 
@@ -69,6 +70,29 @@
 
     .btn {
         margin-bottom: 40px;
+    }
+
+    // phones and small tablets
+    @media screen and (max-width: 768px) {
+        align-items: center;
+        padding: 30px;
+        .ranklist-header {
+            flex-direction: column;
+            align-items: center;
+            .input {
+                font-size: .8em;
+            }
+        }
+        .search-div {
+            align-self: normal;
+            .search-bar-div {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        .ranklist-div {
+            align-self: normal
+        }
     }
 }
 .form {

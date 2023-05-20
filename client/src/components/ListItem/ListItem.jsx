@@ -1,16 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ListItem.scss";
 
 const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
     const [showClose, setShowClose] = useState(false);
-    const handleOnMouseEnter = () => {
+    const [matchMedia, setMatchMedia] = useState(false)
+    let handleOnMouseEnter = () => {
         return removable && setShowClose(true) 
     }
-    const handleOnMouseLeave = () => {
+    let handleOnMouseLeave = () => {
         return removable && setShowClose(false) 
-    }
+    } 
+    useEffect(() => {
+        let media = window.matchMedia("(max-width: 768px)");
+        if (media.matches) {
+            setMatchMedia(true);
+        } else {
+            setMatchMedia(false)
+        }
+    }, [])
+    useEffect(() => {
+        setShowClose(matchMedia)
+    }, [matchMedia])
+    
     return (
-        <div onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave} onClick={() => handleItemClick(item)} className="list-item">
+        <div onMouseEnter={!matchMedia ? handleOnMouseEnter : undefined} onMouseLeave={!matchMedia ? handleOnMouseLeave : undefined} onClick={() => handleItemClick(item)} className="list-item">
             <div className={removable ? "list-info removable" : "list-info"}>
                 <div className="img-div">
                     { index >= 0 ?
@@ -34,12 +47,12 @@ const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
                         </div>
                     </>
                 }
-                { showClose
-                    ? 
+                { showClose && removable
+                    &&
                     <span className="material-symbols-outlined" onClick={() => removeItem(index)}>
                     close
                     </span> 
-                    : ""
+                    
                 }
             </div>
         </div>

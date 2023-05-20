@@ -18,5 +18,9 @@
             white-space: pre-wrap;
             overflow: hidden;
         }
+        // phones and small tablets
+        @media screen and (max-width: 768px) {
+            justify-content: center;
+        }
     }
 }

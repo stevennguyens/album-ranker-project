@@ -1,5 +1,5 @@
 .search-bar {
-    width: 400px;
+    width: 100%;
     position: relative;
     input {
         width: 100%;
@@ -16,7 +16,9 @@
         right: 5px;
         color: var(--darker-grey);
         cursor: pointer;
-
+        @media screen and (max-width: 768px) {
+            top: 7px;
+        }
         &:hover {
             color: var(--black);
         }

@@ -14,6 +14,11 @@
         color: black;
     }
     a:hover {
-        color: var(--darker-grey)
+        color: var(--matcha-light)
+    }
+
+    // phones and small tablets
+    @media screen and (max-width: 768px) {
+        padding: 20px 50px;
     }
 }
