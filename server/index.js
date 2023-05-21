@@ -131,8 +131,8 @@ app.use("/users", userRoutes);
 app.use("/ranklists", rankListRoutes);
 
  // mongoose set up
-const PORT = process.env.PORT || 6001;
-mongoose.connect(process.env.DB_URL, {
+const PORT = process.env.REACT_APP_PORT || 6001;
+mongoose.connect(process.env.REACT_APP_DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
