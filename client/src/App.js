@@ -1,7 +1,6 @@
 import { BrowserRouter, Navigate, Routes, Route, useNavigate } from "react-router-dom";
 import HomePage from "scenes/homePage/HomePage";
 import LoginPage from "scenes/loginPage/LoginPage";
-import ProfilePage from "scenes/profilePage/ProfilePage";
 import RankListPage from "scenes/rankListPage/RankListPage";
 import Navbar from "scenes/navbar/Navbar";
 import { useSelector } from "react-redux";
@@ -23,7 +22,6 @@ function App() {
       (<Routes>
         <Route path="/"></Route>
         <Route path="/home" element={token ? <HomePage/> : <Navigate to="/"/>}></Route>
-        <Route path="/profile/:userId" element={token ? <ProfilePage/> : <Navigate to="/"/>}></Route>
         <Route path="/ranklists/:ranklistId" element={ token ? <RankListPage/>: <Navigate to=""/>}></Route>
         <Route path="/ranklists" element={token ? <RankListPage/> : <Navigate to="/"/>}></Route>
         <Route path="/add-ranklist/:type" element={token ? <AddRankListPage/> : <Navigate to="/"/>}></Route>
