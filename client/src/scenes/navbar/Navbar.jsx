@@ -7,6 +7,7 @@ import { logout } from "spotify.js";
 const Navbar = ({token}) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const SERVER_URL = "https://museranker-server.onrender.com"
     useEffect(() => {
         const access_token = new URLSearchParams(window.location.search).get("access_token");
         if (access_token) {
@@ -45,7 +46,7 @@ const Navbar = ({token}) => {
             </span>
             {!token ?
             (<span>
-                <a href={`${process.env.SERVER_URL}/login`}>
+                <a href={`${SERVER_URL}/login`}>
                    Log in 
                 </a>
                 
