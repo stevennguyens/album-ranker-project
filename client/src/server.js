@@ -1,6 +1,6 @@
 import { getUserId } from "spotify";
 
-const SERVER_URL = process.env.SERVER_URL
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 // read
 export const getRanklist = async (ranklistId, setRanklist) => {
     const response = await fetch(`${SERVER_URL}/ranklists/ranklist/${ranklistId}`);
