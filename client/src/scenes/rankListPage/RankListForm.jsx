@@ -117,7 +117,7 @@ const RankListForm = (props) => {
 
     const fetchTracksFromAlbum = async (id) => {
         const response = await fetch(
-            `https://api.spotify.com/v1/albums/${id}/tracks&limit=50`, 
+            `https://api.spotify.com/v1/albums/${id}/tracks?limit=50`, 
             {
                 method: 'GET',
                 headers: {
