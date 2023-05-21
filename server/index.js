@@ -25,10 +25,10 @@ app.use(bodyParser.json({extended: true}));
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 const upload = multer();
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
-const CLIENT_URL = process.env.CLIENT_URL
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
+const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+const CLIENT_URL = process.env.REACT_APP_CLIENT_URL
 
 const generateRandomString = (length) => {
     var text = '';
