@@ -7,7 +7,7 @@ import { logout } from "spotify.js";
 const Navbar = ({token}) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const SERVER_URL = "https://museranker-server.onrender.com"
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL
     useEffect(() => {
         const access_token = new URLSearchParams(window.location.search).get("access_token");
         if (access_token) {

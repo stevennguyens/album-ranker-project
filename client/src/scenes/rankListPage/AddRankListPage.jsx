@@ -3,7 +3,7 @@ import RankListForm from "./RankListForm";
 import "./RankListPage.scss";
 import { getUserId } from "spotify";
 const AddRankListPage = () => {
-    const SERVER_URL = process.env.SERVER_URL;
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
     const navigate = useNavigate();
     const { state } = useLocation();
     let { type } = useParams();
