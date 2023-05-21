@@ -31,7 +31,7 @@ const RankListPage = () => {
 
     const saveRanklist = async ({name, items}) => {
         if (name) {
-            const response = await fetch(`http://localhost:3001/ranklists/ranklist/${ranklistId}`,
+            const response = await fetch(`${process.env.SERVER_URL}/ranklists/ranklist/${ranklistId}`,
                 {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},

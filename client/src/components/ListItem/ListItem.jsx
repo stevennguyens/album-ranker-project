@@ -52,7 +52,6 @@ const ListItem = ({index, item, handleItemClick, removable, removeItem}) => {
                     <span className="material-symbols-outlined" onClick={() => removeItem(index)}>
                     close
                     </span> 
-                    
                 }
             </div>
         </div>

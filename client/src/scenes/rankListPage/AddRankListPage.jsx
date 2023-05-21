@@ -3,6 +3,7 @@ import RankListForm from "./RankListForm";
 import "./RankListPage.scss";
 import { getUserId } from "spotify";
 const AddRankListPage = () => {
+    const SERVER_URL = process.env.SERVER_URL;
     const navigate = useNavigate();
     const { state } = useLocation();
     let { type } = useParams();
@@ -11,7 +12,7 @@ const AddRankListPage = () => {
     const createRanklist = async ({name, items}) => {
         const userId = await getUserId();
         const response = await fetch (
-            'http://localhost:3001/ranklists/add-ranklist',
+            `${SERVER_URL}/ranklists/add-ranklist`,
             {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},

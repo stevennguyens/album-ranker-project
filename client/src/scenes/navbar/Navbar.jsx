@@ -45,7 +45,7 @@ const Navbar = ({token}) => {
             </span>
             {!token ?
             (<span>
-                <a href="http://localhost:3001/login">
+                <a href={`${process.env.SERVER_URL}/login`}>
                    Log in 
                 </a>
                 

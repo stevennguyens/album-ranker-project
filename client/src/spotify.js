@@ -6,6 +6,8 @@ const LOCALSTORAGE_KEYS = {
     timestamp: 'spotify_timestamp'
 }
 
+const SERVER_URL = process.env.SERVER_URL
+
 // map to get local storage values
 const LOCALSTORAGE_VALUES = {
     accessToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.accessToken),
@@ -70,7 +72,7 @@ const getRefreshToken = async () => {
                 console.error('No refresh token available');
                 logout();
               }
-        const response = await fetch(`http://localhost:3001/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
+        const response = await fetch(`${SERVER_URL}/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
         const data = await response.json()
         console.log("token refreshed")
         window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token);

@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import "./Form.scss";
 
+const SERVER_URL = process.env.SERVER_URL
+
 const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
     lastName: yup.string().required("required"),
@@ -43,7 +45,7 @@ const Form = () => {
             formdata.append(value, values[value])
         }
         const savedUserResponse = await fetch(
-            "http://localhost:3001/auth/register",
+            `${SERVER_URL}/auth/register`,
             {
                 method: "POST",
                 body: formdata
@@ -59,7 +61,7 @@ const Form = () => {
 
     const login = async (values, onSubmitProps) => {
         const loggedInResponse = await fetch(
-            "http://localhost:3001/auth/login",
+            `${SERVER_URL}/auth/login`,
             {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},

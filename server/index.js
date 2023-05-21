@@ -28,6 +28,7 @@ const upload = multer();
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
+const CLIENT_URL = process.env.CLIENT_URL
 
 const generateRandomString = (length) => {
     var text = '';
@@ -91,7 +92,8 @@ app.get('/callback', async (req, res) => {
                 refresh_token,
                 expires_in
             });
-            res.redirect(`http://localhost:3000/?${queryParams}`);
+            // res.redirect(`http://localhost:3000/?${queryParams}`);
+            res.redirect(`${CLIENT_URL}/?${queryParams}`);
         })
         .catch(error => {
             res.send(error);

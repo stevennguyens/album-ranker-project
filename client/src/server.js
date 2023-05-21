@@ -1,8 +1,9 @@
 import { getUserId } from "spotify";
 
+const SERVER_URL = process.env.SERVER_URL
 // read
 export const getRanklist = async (ranklistId, setRanklist) => {
-    const response = await fetch(`http://localhost:3001/ranklists/ranklist/${ranklistId}`);
+    const response = await fetch(`${SERVER_URL}/ranklists/ranklist/${ranklistId}`);
     const data = await response.json();
     if (data) setRanklist(data)
 }
@@ -10,7 +11,7 @@ export const getRanklist = async (ranklistId, setRanklist) => {
 export const getRanklists = async (setRankLists) => {
     const userId = await getUserId();
     const response = await fetch(
-        `http://localhost:3001/ranklists/${userId}`
+        `${SERVER_URL}/ranklists/${userId}`
     );
     const data = await response.json();
     if (data) {
@@ -22,7 +23,7 @@ export const getRanklists = async (setRankLists) => {
 export const deleteRanklist = async (ranklistId) => {
     const userId = await getUserId(); 
     const response = await fetch(
-        `http://localhost:3001/ranklists/${userId}/delete-ranklist/${ranklistId}`,
+        `${SERVER_URL}/ranklists/${userId}/delete-ranklist/${ranklistId}`,
         {
             method: "DELETE"
         }
