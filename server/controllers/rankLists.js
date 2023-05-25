@@ -59,12 +59,8 @@ export const updateRanklist = async (req, res) => {
 
 // delete
 export const deleteRanklist = async (req, res) => {
-    console.log("delete ranklist 1")
     try {
-        console.log("delete ranklist")
         const { userId, ranklistId } = req.params;
-        console.log(ranklistId);
-        console.log(userId)
         const doc = await RankList.deleteOne({_id: ranklistId, userId: userId});
         res.status(200).json(doc);
     } catch (err) {
