@@ -9,7 +9,7 @@ import BackButton from "components/Buttons/BackButton";
 import MoreButton from "components/Buttons/MoreBtn";
 import EditDialog from "components/Dialog/EditDialog/EditDialog";
 import { getRanklist } from "server";
-import RankListForm from "./RankListForm";
+import RankList from "./RankList";
 import { getUserId } from "spotify";
 import { deleteRanklist } from "server";
 import { SERVER_URL } from "constants";
@@ -55,7 +55,7 @@ const RankListPage = () => {
     }
     return (
         ranklist && 
-        <RankListForm name={ranklist.name} ranklist={ranklist.items} type={ranklist.type} buttonText="Save" edit={edit} handleClick={saveRanklist}>
+        <RankList name={ranklist.name} ranklist={ranklist.items} type={ranklist.type} buttonText="Save" edit={edit} handleClick={saveRanklist}>
             { 
                 ranklist.userId === userId &&
                 (<MoreButton> 
@@ -64,7 +64,7 @@ const RankListPage = () => {
                 </MoreButton>)
                 
             }
-        </RankListForm>
+        </RankList>
     )
 }
 

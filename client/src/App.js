@@ -3,10 +3,8 @@ import HomePage from "scenes/homePage/HomePage";
 import LoginPage from "scenes/loginPage/LoginPage";
 import RankListPage from "scenes/rankListPage/RankListPage";
 import Navbar from "scenes/navbar/Navbar";
-import { useSelector } from "react-redux";
 import { accessToken, logout } from "spotify.js";
 import { useEffect, useState } from "react";
-import RankListForm from "scenes/rankListPage/RankListForm";
 import AddRankListPage from "scenes/rankListPage/AddRankListPage";
 
 function App() {
@@ -18,15 +16,14 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar token={token}/>
-      {token ?
-      (<Routes>
-        <Route path="/"></Route>
+      <Routes>
+        <Route path="/" element={!token ? <LoginPage/> : <Navigate to="/home"/>}></Route>
         <Route path="/home" element={token ? <HomePage/> : <Navigate to="/"/>}></Route>
         <Route path="/ranklists/:ranklistId" element={ token ? <RankListPage/>: <Navigate to=""/>}></Route>
         <Route path="/ranklists" element={token ? <RankListPage/> : <Navigate to="/"/>}></Route>
         <Route path="/add-ranklist/:type" element={token ? <AddRankListPage/> : <Navigate to="/"/>}></Route>
-      </Routes>) : (null)
-      }
+      </Routes>
+  
     </BrowserRouter>
   );
 }

@@ -1,8 +1,11 @@
+import { SERVER_URL } from "constants";
 import "./LoginPage.scss";
-import Form from "./Form.jsx";
 const LoginPage = () => {
     return(
-        <Form/>
+        <div className="login">
+            <a href={`${SERVER_URL}/login`}>Log in to Spotify</a>
+        </div>
+        
     )
 }
 

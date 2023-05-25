@@ -1,8 +1,10 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import RankListForm from "./RankListForm";
+import RankList from "./RankList";
 import "./RankListPage.scss";
 import { getUserId } from "spotify";
 import { SERVER_URL } from "constants";
+
+// page to create a rank list
 const AddRankListPage = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -26,7 +28,7 @@ const AddRankListPage = () => {
     }
 
     return (
-        <RankListForm name={`Ranklist #${state.size + 1}`} ranklist={[]} type={type} buttonText="Add ranklist" handleClick={createRanklist} edit={true}/>
+        <RankList name={`Ranklist #${state.size + 1}`} ranklist={[]} type={type} buttonText="Add ranklist" handleClick={createRanklist} edit={true}/>
     )
 }
 

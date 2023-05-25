@@ -3,6 +3,8 @@ import "./Button.scss";
 import DropdownItem from "components/Dropdown/DropdownItem";
 import { useState, useEffect } from "react";
 
+// more button component that opens a dropdown menu
+// @params children     dynamically add dropdown menu items
 const MoreButton = ({children}) => {
     const [toggleMenu, setToggleMenu] = useState(false);
 

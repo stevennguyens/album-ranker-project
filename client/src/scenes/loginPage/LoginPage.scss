@@ -1,0 +1,20 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 300px;
+
+    a {
+        color: var(--font);
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 700;
+        border: none;
+        background: var(--matcha);
+        padding: 20px 30px;
+        text-align: center;
+        &:hover {
+            background-color: var(--matcha-2);
+        }
+    }
+}

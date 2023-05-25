@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "spotify.js";
 import { SERVER_URL } from "constants";
 
+// navbar shows app name and log out (when logged in)
 const Navbar = ({token}) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -28,14 +29,7 @@ const Navbar = ({token}) => {
             <span onClick={navigateHome}>
                 Muserank
             </span>
-            {!token ?
-            (<span>
-                <a href={`${SERVER_URL}/login`}>
-                   Log in 
-                </a>
-                
-            </span>)
-            : 
+            {token &&
             (<span>
                 <a href="#" onClick={handleLogout}>
                    Log out

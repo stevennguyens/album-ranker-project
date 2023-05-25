@@ -14,7 +14,13 @@ import RankListImage from "components/RankList/RankListImage";
 import { getRanklist } from "server";
 import ListItem from "components/ListItem/ListItem";
 
-const RankListForm = (props) => {
+// standard ranklist 
+// props:
+// type         type of ranklist
+// name         name of ranklist
+// ranklist     array of items in ranklist
+// edit         boolean for if ranklist is being created/updated or viewed
+const RankList = (props) => {
     const navigate = useNavigate();
     const [name, setName] = useState(props.name);
     const [searchQuery, setSearchQuery] = useState();
@@ -256,4 +262,4 @@ const RankListForm = (props) => {
     )
 }
 // when add, attach spoify user id?
-export default RankListForm;
+export default RankList;

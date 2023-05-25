@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserId } from 'spotify';
 import {getRanklists} from 'server';
 
+// home page of app displays all of the user's ranklists
 const HomePage = () => {
     const [ranklists, setRankLists] = useState([]);
     const navigate = useNavigate();
