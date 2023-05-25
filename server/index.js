@@ -27,7 +27,8 @@ app.use(cors());
 const upload = multer();
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
-const SERVER_URL = process.env.NODE_ENV === "production" ? process.env.SERVER_URL : "http://localhost:3001"
+const SERVER_URL = process.env.NODE_ENV === "production" ? process.env.REACT_APP_SERVER_URL : "http://localhost:3001";
+const CLIENT_URL = process.env.NODE_ENV === "production" ? process.env.REACT_APP_CLIENT_URL : "http://localhost:3000";
 const generateRandomString = (length) => {
     var text = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -90,7 +91,7 @@ app.get('/callback', async (req, res) => {
                 refresh_token,
                 expires_in
             });
-            res.redirect(`http://localhost:3000/?${queryParams}`);
+            res.redirect(`${CLIENT_URL}?${queryParams}`);
         })
         .catch(error => {
             res.send(error);
@@ -115,7 +116,6 @@ app.get('/refresh_token', async (req, res) => {
     .then(response => response.json())
     .then(data => {
         res.send({"access_token": data.access_token});
-        //res.json(data);
     })
     .catch(err => {
         res.send(err)

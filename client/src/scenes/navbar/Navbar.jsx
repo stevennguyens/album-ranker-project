@@ -23,7 +23,6 @@ const Navbar = ({token}) => {
             navigate("/home");
         }
     }
-    console.log(SERVER_URL)
     return(
         <div id="navbar">
             <span onClick={navigateHome}>

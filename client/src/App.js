@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
       setToken(accessToken);
   }, []);
-  console.log("APP")
   return (
     <BrowserRouter>
       <Navbar token={token}/>
