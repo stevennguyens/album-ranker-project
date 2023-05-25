@@ -30,7 +30,6 @@
                     white-space: nowrap;
                     overflow: hidden;
                 }
-                
             }
         }
     }
@@ -79,8 +78,9 @@
         .ranklist-header {
             flex-direction: column;
             align-items: center;
+            justify-items: center;
             .input {
-                font-size: .8em;
+                font-size: .7em;
             }
         }
         .search-div {

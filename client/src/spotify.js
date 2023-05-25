@@ -1,3 +1,5 @@
+import { SERVER_URL } from "constants";
+
 // map storing local storage keys
 const LOCALSTORAGE_KEYS = {
     accessToken: 'spotify_access_token',
@@ -5,8 +7,6 @@ const LOCALSTORAGE_KEYS = {
     expireTime: 'spotify_expire_time',
     timestamp: 'spotify_timestamp'
 }
-
-const SERVER_URL = process.env.SERVER_URL
 
 // map to get local storage values
 const LOCALSTORAGE_VALUES = {
@@ -26,7 +26,8 @@ const getAccessToken = () => {
     }
     const error = urlParams.get('error');
     if (error || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
-        logout()
+        getRefreshToken() 
+        //logout()
     }
 
     if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
@@ -73,11 +74,14 @@ const getRefreshToken = async () => {
                 logout();
               }
         const response = await fetch(`${SERVER_URL}/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
-        const data = await response.json()
-        console.log("token refreshed")
-        window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token);
-        window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now());
-        window.location.reload();
+        const data = await response.json();
+        if (data) {
+            window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token);
+            window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now());
+            window.location.reload();
+        } else {
+            logout();
+        }
     } catch (e) {
         console.error(e)
     }

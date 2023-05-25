@@ -27,9 +27,7 @@ app.use(cors());
 const upload = multer();
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
-const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-const CLIENT_URL = process.env.REACT_APP_CLIENT_URL
-
+const SERVER_URL = process.env.NODE_ENV === "production" ? process.env.SERVER_URL : "http://localhost:3001"
 const generateRandomString = (length) => {
     var text = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -49,7 +47,7 @@ app.get('/login', async (req, res) => {
     const queryParams = querystring.stringify({
         client_id: CLIENT_ID,
         response_type: "code",
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: `${SERVER_URL}/callback`,
         state: state,
         scope: scope,
     })
@@ -74,7 +72,7 @@ app.get('/callback', async (req, res) => {
             body: querystring.stringify({
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: REDIRECT_URI,
+                redirect_uri: `${SERVER_URL}/callback`,
             })
         })
         .then(response => {
@@ -92,8 +90,7 @@ app.get('/callback', async (req, res) => {
                 refresh_token,
                 expires_in
             });
-            // res.redirect(`http://localhost:3000/?${queryParams}`);
-            res.redirect(`${CLIENT_URL}/?${queryParams}`);
+            res.redirect(`http://localhost:3000/?${queryParams}`);
         })
         .catch(error => {
             res.send(error);
@@ -117,7 +114,7 @@ app.get('/refresh_token', async (req, res) => {
     })
     .then(response => response.json())
     .then(data => {
-        res.send(data);
+        res.send({"access_token": data.access_token});
         //res.json(data);
     })
     .catch(err => {

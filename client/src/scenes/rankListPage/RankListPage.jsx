@@ -12,6 +12,7 @@ import { getRanklist } from "server";
 import RankListForm from "./RankListForm";
 import { getUserId } from "spotify";
 import { deleteRanklist } from "server";
+import { SERVER_URL } from "constants";
 const RankListPage = () => {
     const navigate = useNavigate();
     const {ranklistId} = useParams();
@@ -31,7 +32,7 @@ const RankListPage = () => {
 
     const saveRanklist = async ({name, items}) => {
         if (name) {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/ranklists/ranklist/${ranklistId}`,
+            const response = await fetch(`${SERVER_URL}/ranklists/ranklist/${ranklistId}`,
                 {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},

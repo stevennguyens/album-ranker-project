@@ -2,8 +2,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import RankListForm from "./RankListForm";
 import "./RankListPage.scss";
 import { getUserId } from "spotify";
+import { SERVER_URL } from "constants";
 const AddRankListPage = () => {
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
     const navigate = useNavigate();
     const { state } = useLocation();
     let { type } = useParams();

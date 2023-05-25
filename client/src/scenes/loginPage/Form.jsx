@@ -45,7 +45,7 @@ const Form = () => {
             formdata.append(value, values[value])
         }
         const savedUserResponse = await fetch(
-            `${SERVER_URL}/auth/register`,
+            `/auth/register`,
             {
                 method: "POST",
                 body: formdata
@@ -61,7 +61,7 @@ const Form = () => {
 
     const login = async (values, onSubmitProps) => {
         const loggedInResponse = await fetch(
-            `${SERVER_URL}/auth/login`,
+            `/auth/login`,
             {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
