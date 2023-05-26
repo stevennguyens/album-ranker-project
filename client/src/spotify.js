@@ -26,8 +26,8 @@ const getAccessToken = () => {
     }
     const error = urlParams.get('error');
     if (error || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
-        getRefreshToken() 
-        //logout()
+        //getRefreshToken() 
+        logout()
     }
 
     if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
@@ -75,11 +75,14 @@ const getRefreshToken = async () => {
               }
         const response = await fetch(`${SERVER_URL}/refresh_token?refresh_token=${LOCALSTORAGE_VALUES.refreshToken}`)
         const data = await response.json();
+        console.log(data)
         if (data) {
+            console.log("data" + data)
             window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token);
             window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now());
-            window.location.reload();
+            //window.location.reload();
         } else {
+            console.log("logging out")
             logout();
         }
     } catch (e) {
@@ -88,6 +91,7 @@ const getRefreshToken = async () => {
 }
 
 export const logout = () => {
+    console.log("logout")
     for (const property in LOCALSTORAGE_KEYS) {
         window.localStorage.removeItem(LOCALSTORAGE_KEYS[property])
     }

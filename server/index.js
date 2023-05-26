@@ -84,13 +84,14 @@ app.get('/callback', async (req, res) => {
             }
         })
         .then(data => {
+            // const { access_token, refresh_token, expires_in } = data;
             const { access_token, refresh_token, expires_in } = data;
-
             const queryParams = querystring.stringify({
                 access_token,
                 refresh_token,
                 expires_in
             });
+            console.log("ACCESS"+access_token)
             res.redirect(`${CLIENT_URL}?${queryParams}`);
         })
         .catch(error => {
@@ -101,25 +102,26 @@ app.get('/callback', async (req, res) => {
 
 app.get('/refresh_token', async (req, res) => {
     const refresh_token = req.query.refresh_token;
-    console.log(refresh_token);
-    await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        body: querystring.stringify({
-            grant_type: 'refresh_token',
-            refresh_token: refresh_token,
-        }),
-        headers: {
-            'CONTENT_TYPE': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        res.send({"access_token": data.access_token});
-    })
-    .catch(err => {
-        res.send(err)
-    })
+    console.log("refresh_token:" +refresh_token);
+    try {
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            body: querystring.stringify({
+                grant_type: 'refresh_token',
+                refresh_token: refresh_token,
+            }),
+            headers: {
+                'CONTENT_TYPE': 'application/x-www-form-urlencoded',
+                Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,
+            },
+        });
+        const data = await response.json();
+        console.log(data);
+        res.send(data)
+        //res.send({"access_token": data.access_token});
+    } catch (e) {
+        res.send({error: e.message})
+    }
 })
 app.post("/auth/register", upload.fields([]), register)
 app.post("/ranklists", upload.fields([]), createRankList)
